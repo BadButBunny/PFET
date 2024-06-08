@@ -8,14 +8,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Pelvic Floor Exercise Timer</h1>
-    <div class="settings">
-        <label for="level">Select Level (1-30):</label>
-        <input type="number" id="level" min="1" max="30" value="1">
+    <div class="title-box">
+        <h1>Pelvic Floor Exercise Timer</h1>
     </div>
-    <div class="general-timer" id="general-timer">05:00</div>
-    <div class="timer" id="timer">00:00</div>
-    <div class="buttons">
+    <div class="container">
+        <div class="box settings">
+            <label for="level">Select Level (1-30):</label>
+            <input type="number" id="level" min="1" max="30" value="1">
+        </div>
+        <div class="box mastery-settings">
+            <label for="mastery-level">Select Mastery Level:</label>
+            <select id="mastery-level">
+                <option value="1">Samurai (Beginner)</option>
+                <option value="2">Ronin (Intermediate)</option>
+                <option value="3">Ninja (Advanced)</option>
+                <option value="4">Shogun (Expert)</option>
+                <option value="5">Daimyo (Master)</option>
+                <option value="6">Emperor (Legendary)</option>
+            </select>
+            <label for="sub-level">Select Sub-Level (1-5):</label>
+            <select id="sub-level">
+                <option value="1">Sub-Level 1</option>
+                <option value="2">Sub-Level 2</option>
+                <option value="3">Sub-Level 3</option>
+                <option value="4">Sub-Level 4</option>
+                <option value="5">Sub-Level 5</option>
+            </select>
+        </div>
+    </div>
+    <div class="container">
+        <div class="box general-timer" id="general-timer">05:00</div>
+        <div class="box timer" id="timer">00:00</div>
+    </div>
+    <div class="container buttons">
         <button class="button" id="startButton">Start</button>
         <button class="button" id="stopButton">Stop</button>
         <button class="button" id="resetButton">Reset</button>
