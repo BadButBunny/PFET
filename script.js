@@ -11,9 +11,12 @@ let currentLevel = levels[0];
 let currentIntervalIndex = 0;
 let isResting = false;
 let timer;
+let totalTimer;
 let timeLeft = currentLevel.intervals[0].active;
+let totalTimeLeft = 5 * 60; // 5 minutes in seconds
 
 const timerElement = document.getElementById('timer');
+const generalTimerElement = document.getElementById('general-timer');
 const startButton = document.getElementById('startButton');
 const stopButton = document.getElementById('stopButton');
 const resetButton = document.getElementById('resetButton');
@@ -34,8 +37,24 @@ function updateTimer() {
     timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
+function updateGeneralTimer() {
+    const minutes = Math.floor(totalTimeLeft / 60);
+    const seconds = totalTimeLeft % 60;
+    generalTimerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
 function startTimer() {
     clearInterval(timer);
+    clearInterval(totalTimer);
+    totalTimer = setInterval(() => {
+        if (totalTimeLeft > 0) {
+            totalTimeLeft--;
+            updateGeneralTimer();
+        } else {
+            clearInterval(timer);
+            clearInterval(totalTimer);
+        }
+    }, 1000);
     timer = setInterval(() => {
         if (timeLeft > 0) {
             timeLeft--;
@@ -51,14 +70,18 @@ function startTimer() {
 
 function stopTimer() {
     clearInterval(timer);
+    clearInterval(totalTimer);
 }
 
 function resetTimer() {
     clearInterval(timer);
+    clearInterval(totalTimer);
     isResting = false;
     currentIntervalIndex = 0;
     timeLeft = currentLevel.intervals[0].active;
+    totalTimeLeft = 5 * 60; // 5 minutes in seconds
     updateTimer();
+    updateGeneralTimer();
 }
 
 function setLevel() {
@@ -82,3 +105,4 @@ function playSound(isResting) {
 
 // Initialize timer display
 updateTimer();
+updateGeneralTimer();
