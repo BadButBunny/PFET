@@ -7,6 +7,19 @@ const levels = [
     { intervals: [{ active: 10, rest: 5 }, { active: 10, rest: 5 }, { active: 5, rest: 5 }] } // Level 30
 ];
 
+const masteryLevels = [
+    // Mastery Level 1 - Samurai (Beginner)
+    [
+        { intervals: [{ active: 5, rest: 10 }] }, // Sub-Level 1
+        { intervals: [{ active: 6, rest: 9 }] },  // Sub-Level 2
+        { intervals: [{ active: 7, rest: 8 }] },  // Sub-Level 3
+        { intervals: [{ active: 8, rest: 7 }] },  // Sub-Level 4
+        { intervals: [{ active: 9, rest: 6 }] },  // Sub-Level 5
+    ],
+    // Mastery Level 2 - Ronin (Intermediate)
+    // Add levels similarly for Mastery Levels 2-6
+];
+
 let currentLevel = levels[0];
 let currentIntervalIndex = 0;
 let isResting = false;
@@ -21,6 +34,8 @@ const startButton = document.getElementById('startButton');
 const stopButton = document.getElementById('stopButton');
 const resetButton = document.getElementById('resetButton');
 const levelInput = document.getElementById('level');
+const masteryLevelSelect = document.getElementById('mastery-level');
+const subLevelSelect = document.getElementById('sub-level');
 
 // Load sound files
 const activeSound = new Audio('active.mp3.wav');
@@ -30,6 +45,8 @@ startButton.addEventListener('click', startTimer);
 stopButton.addEventListener('click', stopTimer);
 resetButton.addEventListener('click', resetTimer);
 levelInput.addEventListener('change', setLevel);
+masteryLevelSelect.addEventListener('change', setMasteryLevel);
+subLevelSelect.addEventListener('change', setSubLevel);
 
 function updateTimer() {
     const minutes = Math.floor(timeLeft / 60);
@@ -58,66 +75,4 @@ function startTimer() {
     timer = setInterval(() => {
         if (timeLeft > 0) {
             timeLeft--;
-            updateTimer();
-        } else {
-            isResting = !isResting;
-            currentIntervalIndex = (currentIntervalIndex + 1) % currentLevel.intervals.length;
-            timeLeft = isResting ? currentLevel.intervals[currentIntervalIndex].rest : currentLevel.intervals[currentIntervalIndex].active;
-            updateColors(isResting);
-            playSound(isResting);
-        }
-    }, 1000);
-}
-
-function stopTimer() {
-    clearInterval(timer);
-    clearInterval(totalTimer);
-}
-
-function resetTimer() {
-    clearInterval(timer);
-    clearInterval(totalTimer);
-    isResting = false;
-    currentIntervalIndex = 0;
-    timeLeft = currentLevel.intervals[0].active;
-    totalTimeLeft = 5 * 60; // 5 minutes in seconds
-    updateTimer();
-    updateGeneralTimer();
-    updateColors(false);
-}
-
-function setLevel() {
-    const levelIndex = parseInt(levelInput.value) - 1;
-    if (levelIndex >= 0 && levelIndex < levels.length) {
-        currentLevel = levels[levelIndex];
-        resetTimer();
-    } else {
-        alert('Please select a valid level between 1 and 30.');
-        levelInput.value = 1;
-    }
-}
-
-function playSound(isResting) {
-    if (isResting) {
-        restSound.currentTime = 0; // Reset to the beginning of the audio
-        restSound.play();
-    } else {
-        activeSound.currentTime = 0; // Reset to the beginning of the audio
-        activeSound.play();
-    }
-}
-
-function updateColors(isResting) {
-    if (isResting) {
-        document.body.style.backgroundColor = 'grey';
-        timerElement.style.color = 'white';
-    } else {
-        document.body.style.backgroundColor = 'royalblue';
-        timerElement.style.color = 'white';
-    }
-}
-
-// Initialize timer display and colors
-updateTimer();
-updateGeneralTimer();
-updateColors(false);
+           
