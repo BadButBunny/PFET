@@ -17,16 +17,16 @@ const timerElement = document.getElementById('timer');
 const startButton = document.getElementById('startButton');
 const stopButton = document.getElementById('stopButton');
 const resetButton = document.getElementById('resetButton');
-const levelSelect = document.getElementById('level');
+const levelInput = document.getElementById('level');
 
 // Load sound files
-const activeSound = new Audio('active.mp3');
-const restSound = new Audio('rest.mp3');
+const activeSound = new Audio('active.mp3.wav');
+const restSound = new Audio('rest.mp3.wav');
 
 startButton.addEventListener('click', startTimer);
 stopButton.addEventListener('click', stopTimer);
 resetButton.addEventListener('click', resetTimer);
-levelSelect.addEventListener('change', setLevel);
+levelInput.addEventListener('change', setLevel);
 
 function updateTimer() {
     const minutes = Math.floor(timeLeft / 60);
@@ -62,9 +62,14 @@ function resetTimer() {
 }
 
 function setLevel() {
-    const levelIndex = parseInt(levelSelect.value) - 1;
-    currentLevel = levels[levelIndex];
-    resetTimer();
+    const levelIndex = parseInt(levelInput.value) - 1;
+    if (levelIndex >= 0 && levelIndex < levels.length) {
+        currentLevel = levels[levelIndex];
+        resetTimer();
+    } else {
+        alert('Please select a valid level between 1 and 30.');
+        levelInput.value = 1;
+    }
 }
 
 function playSound(isResting) {
