@@ -29,7 +29,7 @@ const masteryLevels = [
 
 const masteryNames = ["Samurai", "Ronin", "Ninja", "Shogun", "Daimyo", "Emperor"];
 
-let currentLevel = levels[0];
+let currentLevel = masteryLevels[0][0];
 let currentIntervalIndex = 0;
 let isResting = false;
 let timer;
@@ -70,12 +70,7 @@ function updateGeneralTimer() {
 function startTimer() {
     clearInterval(timer);
     clearInterval(totalTimer);
-Continuing from the previous JavaScript code:
-
-```javascript
-function startTimer() {
-    clearInterval(timer);
-    clearInterval(totalTimer);
+    totalTimeLeft = 5 * 60; // Reset total time
     totalTimer = setInterval(() => {
         if (totalTimeLeft > 0) {
             totalTimeLeft--;
@@ -118,22 +113,13 @@ function resetTimer() {
 
 function setMasteryLevel() {
     const masteryLevelIndex = parseInt(masteryLevelSelect.value) - 1;
-    const subLevelIndex = parseInt(subLevelSelect.value) - 1;
-    if (masteryLevelIndex >= 0 && masteryLevelIndex < masteryLevels.length && subLevelIndex >= 0 && subLevelIndex < masteryLevels[masteryLevelIndex].length) {
-        updateSubLevelOptions(masteryLevelIndex);
-        currentLevel = masteryLevels[masteryLevelIndex][subLevelIndex];
-        resetTimer();
-    } else {
-        alert('Please select a valid mastery and sub-level.');
-        masteryLevelSelect.value = 1;
-        subLevelSelect.value = 1;
-    }
+    updateSubLevelOptions(masteryLevelIndex);
+    currentLevel = masteryLevels[masteryLevelIndex][0]; // Default to first sub-level
+    resetTimer();
 }
 
 function updateSubLevelOptions(masteryLevelIndex) {
-    const subLevels = [
-        "I", "II", "III", "IV", "V"
-    ];
+    const subLevels = ["I", "II", "III", "IV", "V"];
     subLevelSelect.innerHTML = "";
     for (let i = 0; i < subLevels.length; i++) {
         const option = document.createElement("option");
