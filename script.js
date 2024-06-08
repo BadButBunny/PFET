@@ -17,8 +17,17 @@ const masteryLevels = [
         { intervals: [{ active: 9, rest: 6 }] },  // Sub-Level 5
     ],
     // Mastery Level 2 - Ronin (Intermediate)
-    // Add levels similarly for Mastery Levels 2-6
+    [
+        { intervals: [{ active: 6, rest: 8 }] }, // Sub-Level 1
+        { intervals: [{ active: 7, rest: 7 }] },  // Sub-Level 2
+        { intervals: [{ active: 8, rest: 6 }] },  // Sub-Level 3
+        { intervals: [{ active: 9, rest: 5 }] },  // Sub-Level 4
+        { intervals: [{ active: 10, rest: 4 }] },  // Sub-Level 5
+    ],
+    // Add similar levels for Mastery Levels 3-6
 ];
+
+const masteryNames = ["Samurai", "Ronin", "Ninja", "Shogun", "Daimyo", "Emperor"];
 
 let currentLevel = levels[0];
 let currentIntervalIndex = 0;
@@ -33,7 +42,6 @@ const generalTimerElement = document.getElementById('general-timer');
 const startButton = document.getElementById('startButton');
 const stopButton = document.getElementById('stopButton');
 const resetButton = document.getElementById('resetButton');
-const levelInput = document.getElementById('level');
 const masteryLevelSelect = document.getElementById('mastery-level');
 const subLevelSelect = document.getElementById('sub-level');
 
@@ -44,7 +52,6 @@ const restSound = new Audio('rest.mp3.wav');
 startButton.addEventListener('click', startTimer);
 stopButton.addEventListener('click', stopTimer);
 resetButton.addEventListener('click', resetTimer);
-levelInput.addEventListener('change', setLevel);
 masteryLevelSelect.addEventListener('change', setMasteryLevel);
 subLevelSelect.addEventListener('change', setSubLevel);
 
@@ -60,6 +67,12 @@ function updateGeneralTimer() {
     generalTimerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
+function startTimer() {
+    clearInterval(timer);
+    clearInterval(totalTimer);
+Continuing from the previous JavaScript code:
+
+```javascript
 function startTimer() {
     clearInterval(timer);
     clearInterval(totalTimer);
@@ -79,8 +92,7 @@ function startTimer() {
         } else {
             isResting = !isResting;
             currentIntervalIndex = (currentIntervalIndex + 1) % currentLevel.intervals.length;
-            timeLeft = isResting ? currentLevel.intervals[currentIntervalIndex].rest : currentLevel.intervals
-currentIntervalIndex].active;
+            timeLeft = isResting ? currentLevel.intervals[currentIntervalIndex].rest : currentLevel.intervals[currentIntervalIndex].active;
             updateColors(isResting);
             playSound(isResting);
         }
@@ -104,33 +116,37 @@ function resetTimer() {
     updateColors(false);
 }
 
-function setLevel() {
-    const levelIndex = parseInt(levelInput.value) - 1;
-    if (levelIndex >= 0 && levelIndex < levels.length) {
-        currentLevel = levels[levelIndex];
-        resetTimer();
-    } else {
-        alert('Please select a valid level between 1 and 30.');
-        levelInput.value = 1;
-    }
-}
-
 function setMasteryLevel() {
     const masteryLevelIndex = parseInt(masteryLevelSelect.value) - 1;
     const subLevelIndex = parseInt(subLevelSelect.value) - 1;
-    if (masteryLevelIndex >= 0 && masteryLevelIndex < masteryLevels.length) {
+    if (masteryLevelIndex >= 0 && masteryLevelIndex < masteryLevels.length && subLevelIndex >= 0 && subLevelIndex < masteryLevels[masteryLevelIndex].length) {
+        updateSubLevelOptions(masteryLevelIndex);
         currentLevel = masteryLevels[masteryLevelIndex][subLevelIndex];
         resetTimer();
     } else {
-        alert('Please select a valid mastery level.');
+        alert('Please select a valid mastery and sub-level.');
         masteryLevelSelect.value = 1;
+        subLevelSelect.value = 1;
+    }
+}
+
+function updateSubLevelOptions(masteryLevelIndex) {
+    const subLevels = [
+        "I", "II", "III", "IV", "V"
+    ];
+    subLevelSelect.innerHTML = "";
+    for (let i = 0; i < subLevels.length; i++) {
+        const option = document.createElement("option");
+        option.value = i + 1;
+        option.text = `${masteryNames[masteryLevelIndex]} ${subLevels[i]}`;
+        subLevelSelect.appendChild(option);
     }
 }
 
 function setSubLevel() {
     const masteryLevelIndex = parseInt(masteryLevelSelect.value) - 1;
     const subLevelIndex = parseInt(subLevelSelect.value) - 1;
-    if (masteryLevelIndex >= 0 && masteryLevelIndex < masteryLevels.length) {
+    if (masteryLevelIndex >= 0 && masteryLevelIndex < masteryLevels.length && subLevelIndex >= 0 && subLevelIndex < masteryLevels[masteryLevelIndex].length) {
         currentLevel = masteryLevels[masteryLevelIndex][subLevelIndex];
         resetTimer();
     } else {
