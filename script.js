@@ -75,4 +75,90 @@ function startTimer() {
     timer = setInterval(() => {
         if (timeLeft > 0) {
             timeLeft--;
-           
+            updateTimer();
+        } else {
+            isResting = !isResting;
+            currentIntervalIndex = (currentIntervalIndex + 1) % currentLevel.intervals.length;
+            timeLeft = isResting ? currentLevel.intervals[currentIntervalIndex].rest : currentLevel.intervals[currentIntervalIndex].active;
+            updateColors(isResting);
+            playSound(isResting);
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timer);
+    clearInterval(totalTimer);
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    clearInterval(totalTimer);
+    isResting = false;
+    currentIntervalIndex = 0;
+    timeLeft = currentLevel.intervals[0].active;
+    totalTimeLeft = 5 * 60; // 5 minutes in seconds
+    updateTimer();
+    updateGeneralTimer();
+    updateColors(false);
+}
+
+function setLevel() {
+    const levelIndex = parseInt(levelInput.value) - 1;
+    if (levelIndex >= 0 && levelIndex < levels.length) {
+        currentLevel = levels[levelIndex];
+        resetTimer();
+    } else {
+        alert('Please select a valid level between 1 and 30.');
+        levelInput.value = 1;
+    }
+}
+
+function setMasteryLevel() {
+    const masteryLevelIndex = parseInt(masteryLevelSelect.value) - 1;
+    const subLevelIndex = parseInt(subLevelSelect.value) - 1;
+    if (masteryLevelIndex >= 0 && masteryLevelIndex < masteryLevels.length) {
+        currentLevel = masteryLevels[masteryLevelIndex][subLevelIndex];
+        resetTimer();
+    } else {
+        alert('Please select a valid mastery level.');
+        masteryLevelSelect.value = 1;
+    }
+}
+
+function setSubLevel() {
+    const masteryLevelIndex = parseInt(masteryLevelSelect.value) - 1;
+    const subLevelIndex = parseInt(subLevelSelect.value) - 1;
+    if (masteryLevelIndex >= 0 && masteryLevelIndex < masteryLevels.length) {
+        currentLevel = masteryLevels[masteryLevelIndex][subLevelIndex];
+        resetTimer();
+    } else {
+        alert('Please select a valid sub-level.');
+        subLevelSelect.value = 1;
+    }
+}
+
+function playSound(isResting) {
+    if (isResting) {
+        restSound.currentTime = 0; // Reset to the beginning of the audio
+        restSound.play();
+    } else {
+        activeSound.currentTime = 0; // Reset to the beginning of the audio
+        activeSound.play();
+    }
+}
+
+function updateColors(isResting) {
+    if (isResting) {
+        document.body.style.backgroundColor = 'grey';
+        timerElement.style.color = 'white';
+    } else {
+        document.body.style.backgroundColor = 'royalblue';
+        timerElement.style.color = 'white';
+    }
+}
+
+// Initialize timer display and colors
+updateTimer();
+updateGeneralTimer();
+updateColors(false);
