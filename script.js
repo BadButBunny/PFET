@@ -99,8 +99,10 @@ function setLevel() {
 
 function playSound(isResting) {
     if (isResting) {
+        restSound.currentTime = 0; // Reset to the beginning of the audio
         restSound.play();
     } else {
+        activeSound.currentTime = 0; // Reset to the beginning of the audio
         activeSound.play();
     }
 }
