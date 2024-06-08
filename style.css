@@ -12,7 +12,7 @@ h1 {
 .settings {
     margin-bottom: 20px;
 }
-.timer {
+.general-timer, .timer {
     font-size: 3em;
     margin: 20px;
 }
