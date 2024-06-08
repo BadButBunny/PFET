@@ -5,21 +5,33 @@ body {
     justify-content: center;
     height: 100vh;
     font-family: Arial, sans-serif;
+    transition: background-color 0.5s ease;
 }
+
 h1 {
     margin-bottom: 20px;
 }
+
 .settings {
     margin-bottom: 20px;
 }
-.general-timer, .timer {
+
+.general-timer {
+    font-size: 2em;
+    color: black;
+}
+
+.timer {
     font-size: 3em;
     margin: 20px;
+    transition: color 0.5s ease;
 }
+
 .buttons {
     display: flex;
     gap: 10px;
 }
+
 .button {
     padding: 10px 20px;
     font-size: 1em;
