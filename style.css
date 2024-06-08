@@ -26,7 +26,7 @@ body {
 h1 {
     font-size: 2.5em;
     font-weight: 700;
-    color: white;
+    color: black;
     margin: 0;
 }
 
@@ -47,22 +47,26 @@ h1 {
     text-align: center;
 }
 
-.settings label, .settings input, .mastery-settings label, .mastery-settings select {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 1.2em;
-}
-
-.general-timer {
-    font-size: 3em;
-    color: black;
-    flex-grow: 2;
+.settings, .mastery-settings {
+    flex-grow: 1;
 }
 
 .timer {
     font-size: 3em;
     color: black;
+    flex-grow: 2;
+}
+
+.general-timer {
+    font-size: 3em;
+    color: black;
     flex-grow: 1;
+}
+
+.settings label, .settings input, .mastery-settings label, .mastery-settings select {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.2em;
 }
 
 .buttons {
