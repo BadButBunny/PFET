@@ -63,6 +63,7 @@ function startTimer() {
             isResting = !isResting;
             currentIntervalIndex = (currentIntervalIndex + 1) % currentLevel.intervals.length;
             timeLeft = isResting ? currentLevel.intervals[currentIntervalIndex].rest : currentLevel.intervals[currentIntervalIndex].active;
+            updateColors(isResting);
             playSound(isResting);
         }
     }, 1000);
@@ -82,6 +83,7 @@ function resetTimer() {
     totalTimeLeft = 5 * 60; // 5 minutes in seconds
     updateTimer();
     updateGeneralTimer();
+    updateColors(false);
 }
 
 function setLevel() {
@@ -103,6 +105,17 @@ function playSound(isResting) {
     }
 }
 
-// Initialize timer display
+function updateColors(isResting) {
+    if (isResting) {
+        document.body.style.backgroundColor = 'grey';
+        timerElement.style.color = 'white';
+    } else {
+        document.body.style.backgroundColor = 'royalblue';
+        timerElement.style.color = 'white';
+    }
+}
+
+// Initialize timer display and colors
 updateTimer();
 updateGeneralTimer();
+updateColors(false);
