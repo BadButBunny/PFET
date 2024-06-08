@@ -4,27 +4,40 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    font-family: Arial, sans-serif;
-    transition: background-color 0.5s ease;
+    font-family: 'Lato', sans-serif;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 20px;
+    margin: 0;
 }
 
 h1 {
     margin-bottom: 20px;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: white;
 }
 
-.settings {
+.settings, .general-timer, .timer {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    padding: 15px 20px;
+    border-radius: 10px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
-.general-timer {
-    font-size: 2em;
-    color: black;
+.settings label, .settings input {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1.2em;
 }
 
-.timer {
+.general-timer, .timer {
     font-size: 3em;
-    margin: 20px;
-    transition: color 0.5s ease;
+    color: black;
 }
 
 .buttons {
@@ -36,4 +49,17 @@ h1 {
     padding: 10px 20px;
     font-size: 1em;
     cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: #4CAF50;
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.button:active {
+    background-color: #3e8e41;
 }
