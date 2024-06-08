@@ -16,15 +16,16 @@ body {
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
-    padding: 15px 20px;
+    padding: 10px 15px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: center;
-    width: 100%;
+    width: 80%;
+    max-width: 400px;
 }
 
 h1 {
-    font-size: 2.5em;
+    font-size: 1.5em;
     font-weight: 700;
     color: black;
     margin: 0;
@@ -32,51 +33,52 @@ h1 {
 
 .container {
     display: flex;
-    gap: 20px;
-    width: 100%;
+    gap: 10px;
+    width: 80%;
+    max-width: 400px;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .box {
     background-color: rgba(255, 255, 255, 0.8);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
-    padding: 15px 20px;
+    padding: 10px 15px;
     border-radius: 10px;
     text-align: center;
 }
 
-.settings, .mastery-settings {
+.mastery-settings, .sub-level-settings {
     flex-grow: 1;
 }
 
 .timer {
-    font-size: 3em;
+    font-size: 1.5em;
     color: black;
     flex-grow: 2;
 }
 
 .general-timer {
-    font-size: 3em;
+    font-size: 1.5em;
     color: black;
     flex-grow: 1;
 }
 
-.settings label, .settings input, .mastery-settings label, .mastery-settings select {
+.mastery-settings label, .mastery-settings select, .sub-level-settings label, .sub-level-settings select {
     display: block;
-    margin-bottom: 10px;
-    font-size: 1.2em;
+    margin-bottom: 5px;
+    font-size: 0.9em;
 }
 
 .buttons {
     display: flex;
-    gap: 10px;
+    gap: 5px;
 }
 
 .button {
-    padding: 10px 20px;
-    font-size: 1em;
+    padding: 5px 10px;
+    font-size: 0.9em;
     cursor: pointer;
     border: none;
     border-radius: 10px;
