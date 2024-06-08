@@ -79,7 +79,8 @@ function startTimer() {
         } else {
             isResting = !isResting;
             currentIntervalIndex = (currentIntervalIndex + 1) % currentLevel.intervals.length;
-            timeLeft = isResting ? currentLevel.intervals[currentIntervalIndex].rest : currentLevel.intervals[currentIntervalIndex].active;
+            timeLeft = isResting ? currentLevel.intervals[currentIntervalIndex].rest : currentLevel.intervals
+currentIntervalIndex].active;
             updateColors(isResting);
             playSound(isResting);
         }
