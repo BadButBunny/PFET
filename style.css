@@ -49,10 +49,6 @@ h1 {
     text-align: center;
 }
 
-.mastery-settings, .sub-level-settings {
-    flex-grow: 1;
-}
-
 .timer {
     font-size: 1.5em;
     color: black;
@@ -63,12 +59,6 @@ h1 {
     font-size: 1.5em;
     color: black;
     flex-grow: 1;
-}
-
-.mastery-settings label, .mastery-settings select, .sub-level-settings label, .sub-level-settings select {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 0.9em;
 }
 
 .buttons {
