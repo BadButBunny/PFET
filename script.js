@@ -1,105 +1,98 @@
-let isResting = false;
-let timer;
-let totalTimer;
-let timeLeft;
-let totalTimeLeft = 5 * 60; // 5 minutes in seconds
+const exercises = [
+    {
+        name: 'Quick Flick Kegels',
+        description: 'Rapidly contract and relax your pelvic floor muscles.',
+        image: 'quick-flick-kegels.png',
+        duration: 30
+    },
+    {
+        name: 'Long Hold Kegels',
+        description: 'Sustain a contraction for a few seconds to build endurance.',
+        image: 'long-hold-kegels.png',
+        duration: 30
+    },
+    {
+        name: 'Bridge Pose',
+        description: 'Lift your hips to engage the pelvic floor and gluteal muscles.',
+        image: 'bridge-pose.png',
+        duration: 30
+    }
+];
 
-const timerElement = document.getElementById('timer');
-const generalTimerElement = document.getElementById('general-timer');
-const startButton = document.getElementById('startButton');
-const stopButton = document.getElementById('stopButton');
-const resetButton = document.getElementById('resetButton');
+let currentExerciseIndex = 0;
+let timerInterval;
+let timeLeft = exercises[currentExerciseIndex].duration;
 
-// Load sound files
-const activeSound = new Audio('active.mp3.wav');
-const restSound = new Audio('rest.mp3.wav');
+const exerciseName = document.getElementById('exercise-name');
+const exerciseDescription = document.getElementById('exercise-description');
+const exerciseImage = document.getElementById('exercise-image');
+const exerciseTimer = document.getElementById('exercise-timer');
+const progressBar = document.getElementById('progress-bar');
 
-startButton.addEventListener('click', startTimer);
-stopButton.addEventListener('click', stopTimer);
-resetButton.addEventListener('click', resetTimer);
+document.getElementById('startButton').addEventListener('click', startTimer);
+document.getElementById('stopButton').addEventListener('click', stopTimer);
+document.getElementById('resetButton').addEventListener('click', resetTimer);
+document.getElementById('nextButton').addEventListener('click', nextExercise);
+document.getElementById('prevButton').addEventListener('click', prevExercise);
 
-function updateTimer() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+function updateUI() {
+    const exercise = exercises[currentExerciseIndex];
+    exerciseName.textContent = exercise.name;
+    exerciseDescription.textContent = exercise.description;
+    exerciseImage.src = exercise.image;
+    timeLeft = exercise.duration;
+    updateTimerDisplay();
+    updateProgressBar();
 }
 
-function updateGeneralTimer() {
-    const minutes = Math.floor(totalTimeLeft / 60);
-    const seconds = totalTimeLeft % 60;
-    generalTimerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+function updateTimerDisplay() {
+    exerciseTimer.textContent = `00:${timeLeft < 10 ? '0' : ''}${timeLeft}`;
+}
+
+function updateProgressBar() {
+    const totalDuration = exercises[currentExerciseIndex].duration;
+    const percentage = ((totalDuration - timeLeft) / totalDuration) * 100;
+    progressBar.style.width = `${percentage}%`;
 }
 
 function startTimer() {
-    clearInterval(timer);
-    clearInterval(totalTimer);
-    totalTimeLeft = 5 * 60; // Reset total time to 5 minutes
-    setRandomInterval(); // Set initial random interval
-    totalTimer = setInterval(() => {
-        if (totalTimeLeft > 0) {
-            totalTimeLeft--;
-            updateGeneralTimer();
-        } else {
-            clearInterval(timer);
-            clearInterval(totalTimer);
-        }
-    }, 1000);
-    timer = setInterval(() => {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
         if (timeLeft > 0) {
             timeLeft--;
-            updateTimer();
+            updateTimerDisplay();
+            updateProgressBar();
         } else {
-            isResting = !isResting;
-            setRandomInterval(); // Set new random interval
-            updateColors(isResting);
-            playSound(isResting);
+            clearInterval(timerInterval);
+            nextExercise();
         }
     }, 1000);
 }
 
 function stopTimer() {
-    clearInterval(timer);
-    clearInterval(totalTimer);
+    clearInterval(timerInterval);
 }
 
 function resetTimer() {
-    clearInterval(timer);
-    clearInterval(totalTimer);
-    isResting = false;
-    timeLeft = getRandomTime(); // Get initial random time
-    totalTimeLeft = 5 * 60; // 5 minutes in seconds
-    updateTimer();
-    updateGeneralTimer();
-    updateColors(false);
+    clearInterval(timerInterval);
+    timeLeft = exercises[currentExerciseIndex].duration;
+    updateTimerDisplay();
+    updateProgressBar();
 }
 
-function getRandomTime() {
-    return Math.floor(Math.random() * 10) + 1; // Random time between 1 and 10 seconds
-}
-
-function setRandomInterval() {
-    timeLeft = getRandomTime();
-}
-
-function playSound(isResting) {
-    if (isResting) {
-        restSound.currentTime = 0; // Reset to the beginning of the audio
-        restSound.play();
-    } else {
-        activeSound.currentTime = 0; // Reset to the beginning of the audio
-        activeSound.play();
+function nextExercise() {
+    if (currentExerciseIndex < exercises.length - 1) {
+        currentExerciseIndex++;
+        updateUI();
     }
 }
 
-function updateColors(isResting) {
-    if (isResting) {
-        document.body.style.backgroundColor = 'blue';
-        timerElement.style.color = 'white';
-    } else {
-        document.body.style.backgroundColor = 'red';
-        timerElement.style.color = 'white';
+function prevExercise() {
+    if (currentExerciseIndex > 0) {
+        currentExerciseIndex--;
+        updateUI();
     }
 }
 
-// Initialize timer display and colors
-resetTimer();
+// Initialize UI
+updateUI();
