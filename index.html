@@ -3,22 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Pelvic Floor Exercise Timer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <title>Pelvic Floor Exercise Timer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="title-box">
-        <h1>Pelvic Floor Exercise Timer</h1>
-    </div>
-    <div class="container">
-        <div class="box timer" id="timer">00:00</div>
-        <div class="box general-timer" id="general-timer">05:00</div>
-    </div>
-    <div class="container buttons">
-        <button class="button" id="startButton">Start</button>
-        <button class="button" id="stopButton">Stop</button>
-        <button class="button" id="resetButton">Reset</button>
+    <div class="app-container">
+        <header>
+            <h1>Pelvic Floor Exercise Timer</h1>
+        </header>
+        <main>
+            <section class="exercise" id="exercise-section">
+                <h2 id="exercise-name">Quick Flick Kegels</h2>
+                <p id="exercise-description">Rapidly contract and relax your pelvic floor muscles.</p>
+                <img id="exercise-image" src="quick-flick-kegels.png" alt="Quick Flick Kegels">
+                <div class="timer-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                    <div class="timer" id="exercise-timer">00:30</div>
+                </div>
+            </section>
+            <nav class="navigation">
+                <button class="nav-button" id="prevButton">Previous</button>
+                <button class="nav-button" id="nextButton">Next</button>
+            </nav>
+            <section class="control-buttons">
+                <button class="control-button" id="startButton">Start</button>
+                <button class="control-button" id="stopButton">Stop</button>
+                <button class="control-button" id="resetButton">Reset</button>
+            </section>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
