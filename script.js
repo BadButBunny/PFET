@@ -1,91 +1,210 @@
-const exercises = [
-    {
-        name: 'Diaphragmatic Breathing',
-        description: 'Promotes relaxation and prepares the pelvic floor muscles for exercise.',
-        duration: 60 // 1 minute
+// Load translations
+const translations = {
+    en: {
+        welcome: "Welcome to Your Daily PFE Routine",
+        exercises: "Your Exercises",
+        schedule: "Workout Schedule",
+        progress: "Your Progress",
+        settings: "Settings"
     },
-    {
-        name: 'Slow Kegel Contractions',
-        description: 'Strengthens the slow-twitch muscle fibers responsible for sustained support.',
-        duration: 60 // 1 minute
-    },
-    {
-        name: 'Quick Flick Kegels',
-        description: 'Enhances the fast-twitch muscle fibers for quick responses to sudden pressures.',
-        duration: 60 // 1 minute
-    },
-    {
-        name: 'Bridge Pose',
-        description: 'Engages the pelvic floor along with gluteal and core muscles.',
-        duration: 60 // 1 minute
-    },
-    {
-        name: 'Happy Baby Pose',
-        description: 'Promotes relaxation and lengthening of the pelvic floor muscles.',
-        duration: 60 // 1 minute
+    es: {
+        welcome: "Bienvenido a tu rutina diaria de PFE",
+        exercises: "Tus ejercicios",
+        schedule: "Horario de entrenamiento",
+        progress: "Tu progreso",
+        settings: "Configuraciones"
     }
+};
+
+// Workout schedule
+const workoutSchedule = [
+    { name: "Kegel Exercises", duration: 100 },
+    { name: "Pelvic Tilts", duration: 50 },
+    { name: "Bird-Dog", duration: 100 },
+    { name: "Heel Slides", duration: 50 }
 ];
-let currentExerciseIndex = 0;
-let timerInterval;
-let timeLeft = exercises[currentExerciseIndex].duration;
 
-const exerciseNameElement = document.getElementById('exercise-name');
-const exerciseDescriptionElement = document.getElementById('exercise-description');
-const exerciseTimerElement = document.getElementById('exercise-timer');
-const progressBarElement = document.getElementById('progress-bar');
+document.addEventListener("DOMContentLoaded", () => {
+    // Elements
+    const startWorkoutBtn = document.getElementById("startWorkout");
+    const pauseWorkoutBtn = document.getElementById("pauseWorkout");
+    const stopWorkoutBtn = document.getElementById("stopWorkout");
+    const quickStartBtn = document.getElementById("quickStart");
+    const workoutDisplay = document.getElementById("workoutDisplay");
+    const currentExercise = document.getElementById("currentExercise");
+    const timeRemaining = document.getElementById("timeRemaining");
+    const timerSound = document.getElementById("timerSound");
+    const progressForm = document.getElementById("progressForm");
+    const progressList = document.getElementById("progressList");
+    const progressChart = document.getElementById("progressChart").getContext("2d");
+    const toggleDarkMode = document.getElementById("toggleDarkMode");
+    const tutorialModal = document.getElementById("tutorialModal");
+    const closeModal = document.querySelector(".close");
+    const saveSettingsBtn = document.getElementById("saveSettings");
 
-document.getElementById('startButton').addEventListener('click', startTimer);
-document.getElementById('stopButton').addEventListener('click', stopTimer);
-document.getElementById('resetButton').addEventListener('click', resetTimer);
+    let currentIndex = 0;
+    let timerInterval;
+    let isPaused = false;
+    let lang = localStorage.getItem("language") || "en";
 
-function updateUI() {
-    const exercise = exercises[currentExerciseIndex];
-    exerciseNameElement.textContent = exercise.name;
-    exerciseDescriptionElement.textContent = exercise.description;
-    timeLeft = exercise.duration;
-    updateTimerDisplay();
-    updateProgressBar();
-}
+    // Load settings
+    const savedDuration = localStorage.getItem("duration") || 300;
+    document.getElementById("duration").value = savedDuration;
+    document.getElementById("language").value = lang;
+    updateLanguage();
 
-function updateTimerDisplay() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    exerciseTimerElement.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
+    // Dark Mode Toggle
+    toggleDarkMode.addEventListener("click", () => {
+        document.body.classList.toggle("dark");
+        toggleDarkMode.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+    });
 
-function updateProgressBar() {
-    const totalDuration = exercises[currentExerciseIndex].duration;
-    const percentage = ((totalDuration - timeLeft) / totalDuration) * 100;
-    progressBarElement.style.width = `${percentage}%`;
-}
+    // Tutorial Modal
+    if (!localStorage.getItem("tutorialShown")) {
+        tutorialModal.style.display = "block";
+        localStorage.setItem("tutorialShown", "true");
+    }
+    closeModal.addEventListener("click", () => tutorialModal.style.display = "none");
 
-function startTimer() {
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-        if (timeLeft > 0) {
-            timeLeft--;
-            updateTimerDisplay();
-            updateProgressBar();
-        } else {
-            clearInterval(timerInterval);
-            if (currentExerciseIndex < exercises.length - 1) {
-                currentExerciseIndex++;
-                updateUI();
-                startTimer();
-            } else {
-                // Routine complete
-                alert('Well done! You have completed the routine.');
+    // Workout Logic
+    function startWorkout() {
+        currentIndex = 0;
+        workoutDisplay.style.display = "block";
+        startExercise();
+    }
+
+    function startExercise() {
+        const exercise = workoutSchedule[currentIndex];
+        currentExercise.textContent = exercise.name;
+        let timeLeft = exercise.duration;
+        timeRemaining.textContent = timeLeft;
+
+        timerInterval = setInterval(() => {
+            if (!isPaused) {
+                timeLeft--;
+                timeRemaining.textContent = timeLeft;
+                if (timeLeft === 5) timerSound.play();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    currentIndex++;
+                    if (currentIndex < workoutSchedule.length) {
+                        startExercise();
+                    } else {
+                        workoutDisplay.style.display = "none";
+                        alert("Workout completed! Great job!");
+                        logStreak();
+                    }
+                }
             }
-        }
-    }, 1000);
-}
+        }, 1000);
+    }
 
-function stopTimer() {
-    clearInterval(timerInterval);
-}
+    function pauseWorkout() {
+        isPaused = !isPaused;
+        pauseWorkoutBtn.textContent = isPaused ? "Resume" : "Pause";
+    }
 
-function resetTimer() {
-    clearInterval(timerInterval);
-    currentExerciseIndex = 0;
-    updateUI();
-}
+    function stopWorkout() {
+        clearInterval(timerInterval);
+        workoutDisplay.style.display = "none";
+    }
+
+    startWorkoutBtn.addEventListener("click", startWorkout);
+    pauseWorkoutBtn.addEventListener("click", pauseWorkout);
+    stopWorkoutBtn.addEventListener("click", stopWorkout);
+    quickStartBtn.addEventListener("click", startWorkout);
+
+    // Progress Tracking
+    progressForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const date = document.getElementById("date").value;
+        const completed = document.getElementById("completed").value;
+        const progress = { date, completed };
+        saveProgress(progress);
+        displayProgress();
+        updateChart();
+        progressForm.reset();
+    });
+
+    function saveProgress(progress) {
+        let progressData = JSON.parse(localStorage.getItem("progress")) || [];
+        progressData.push(progress);
+        localStorage.setItem("progress", JSON.stringify(progressData));
+    }
+
+    function displayProgress() {
+        progressList.innerHTML = "";
+        const progressData = JSON.parse(localStorage.getItem("progress")) || [];
+        progressData.sort((a, b) => new Date(b.date) - new Date(a.date));
+        progressData.forEach((item, index) => {
+            const li = document.createElement("li");
+            li.textContent = `${item.date}: ${item.completed}`;
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Delete";
+            deleteBtn.addEventListener("click", () => {
+                progressData.splice(index, 1);
+                localStorage.setItem("progress", JSON.stringify(progressData));
+                displayProgress();
+                updateChart();
+            });
+            li.appendChild(deleteBtn);
+            progressList.appendChild(li);
+        });
+    }
+
+    function updateChart() {
+        const progressData = JSON.parse(localStorage.getItem("progress")) || [];
+        const dates = progressData.map(p => p.date);
+        const completions = progressData.map(p => p.completed === "yes" ? 1 : 0);
+        new Chart(progressChart, {
+            type: "line",
+            data: {
+                labels: dates,
+                datasets: [{
+                    label: "Workout Completion",
+                    data: completions,
+                    borderColor: var(--primary),
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true, max: 1 }
+                }
+            }
+        });
+    }
+
+    // Gamification: Streak
+    function logStreak() {
+        let streak = parseInt(localStorage.getItem("streak")) || 0;
+        streak++;
+        localStorage.setItem("streak", streak);
+        if (streak % 5 === 0) alert(`Awesome! You've hit a ${streak}-day streak!`);
+    }
+
+    // Settings
+    saveSettingsBtn.addEventListener("click", () => {
+        const duration = document.getElementById("duration").value;
+        lang = document.getElementById("language").value;
+        localStorage.setItem("duration", duration);
+        localStorage.setItem("language", lang);
+        updateLanguage();
+        alert("Settings saved!");
+    });
+
+    function updateLanguage() {
+        document.querySelector("#home h2").textContent = translations[lang].welcome;
+        document.querySelector("#exercises h2").textContent = translations[lang].exercises;
+        document.querySelector("#schedule h2").textContent = translations[lang].schedule;
+        document.querySelector("#progress h2").textContent = translations[lang].progress;
+        document.querySelector("#settings h2").textContent = translations[lang].settings;
+    }
+
+    // Initial Load
+    displayProgress();
+    updateChart();
+});
+
+// Minified code is handled by tools like Terser in production
