@@ -3,31 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelvic Floor Exercise Timer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="A 5-minute daily pelvic floor exercise app for men.">
+    <title>PFE App for Men - 5-Minute Daily Routine</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="app-container">
-        <header>
-            <h1>Pelvic Floor Exercise Timer</h1>
-        </header>
-        <main>
-            <section class="exercise" id="exercise-section">
-                <h2 id="exercise-name"></h2>
-                <p id="exercise-description"></p>
-                <div class="timer-container">
-                    <div class="progress-bar" id="progress-bar"></div>
-                    <div class="timer" id="exercise-timer">00:00</div>
+    <header role="banner">
+        <img src="logo.png" alt="PFE App Logo" class="logo">
+        <h1>PFE App for Men</h1>
+        <nav role="navigation">
+            <ul>
+                <li><a href="#home" aria-label="Go to Home">Home</a></li>
+                <li><a href="#exercises" aria-label="Go to Exercises">Exercises</a></li>
+                <li><a href="#schedule" aria-label="Go to Schedule">Schedule</a></li>
+                <li><a href="#progress" aria-label="Go to Progress">Progress</a></li>
+                <li><a href="#settings" aria-label="Go to Settings">Settings</a></li>
+            </ul>
+        </nav>
+        <button id="toggleDarkMode" aria-label="Toggle Dark Mode">🌙</button>
+    </header>
+
+    <main role="main">
+        <!-- Home Section -->
+        <section id="home">
+            <h2>Welcome to Your Daily PFE Routine</h2>
+            <p>Spend just 5 minutes a day to strengthen your pelvic floor muscles, improve continence, and boost overall health!</p>
+            <button id="quickStart" aria-label="Quick Start Workout">Quick Start</button>
+            <div id="tutorialModal" class="modal" role="dialog" aria-hidden="true">
+                <div class="modal-content">
+                    <span class="close" aria-label="Close Tutorial">&times;</span>
+                    <h3>First Time Here?</h3>
+                    <p>Follow these steps to get started with your pelvic floor exercises!</p>
                 </div>
-            </section>
-            <section class="control-buttons">
-                <button class="control-button" id="startButton">Start</button>
-                <button class="control-button" id="stopButton">Stop</button>
-                <button class="control-button" id="resetButton">Reset</button>
-            </section>
-        </main>
-    </div>
+            </div>
+        </section>
+
+        <!-- Exercises Section -->
+        <section id="exercises">
+            <h2>Your Exercises</h2>
+            <div class="exercise" tabindex="0">
+                <h3>Kegel Exercises</h3>
+                <video src="kegel-demo.mp4" controls aria-label="Kegel Exercise Demo"></video>
+                <p>Contract your pelvic muscles for 5 seconds, relax for 5 seconds. Repeat 10 times.</p>
+            </div>
+            <div class="exercise" tabindex="0">
+                <h3>Pelvic Tilts</h3>
+                <video src="pelvic-tilt-demo.mp4" controls aria-label="Pelvic Tilt Demo"></video>
+                <p>Tighten abs, press lower back to floor for 5 seconds. Repeat 10 times.</p>
+            </div>
+            <div class="exercise" tabindex="0">
+                <h3>Bird-Dog</h3>
+                <video src="bird-dog-demo.mp4" controls aria-label="Bird-Dog Demo"></video>
+                <p>Extend arm and opposite leg, hold for 10 seconds. Repeat 5 times per side.</p>
+            </div>
+            <div class="exercise" tabindex="0">
+                <h3>Heel Slides</h3>
+                <video src="heel-slide-demo.mp4" controls aria-label="Heel Slide Demo"></video>
+                <p>Slide one heel away, hold 5 seconds, repeat 5 times per leg.</p>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule">
+            <h2>Workout Schedule</h2>
+            <table aria-label="Workout Schedule">
+                <thead>
+                    <tr><th>Exercise</th><th>Duration (s)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Kegel Exercises</td><td>100</td></tr>
+                    <tr><td>Pelvic Tilts</td><td>50</td></tr>
+                    <tr><td>Bird-Dog</td><td>100</td></tr>
+                    <tr><td>Heel Slides</td><td>50</td></tr>
+                </tbody>
+                <tfoot>
+                    <tr><td>Total</td><td>300</td></tr>
+                </tfoot>
+            </table>
+            <button id="startWorkout" aria-label="Start Workout">Start Workout</button>
+            <div id="workoutDisplay" aria-live="polite">
+                <p>Current: <span id="currentExercise"></span></p>
+                <p>Time Left: <span id="timeRemaining"></span>s</p>
+                <button id="pauseWorkout" aria-label="Pause Workout">Pause</button>
+                <button id="stopWorkout" aria-label="Stop Workout">Stop</button>
+            </div>
+            <audio id="timerSound" src="timer-beep.mp3"></audio>
+        </section>
+
+        <!-- Progress Section -->
+        <section id="progress">
+            <h2>Your Progress</h2>
+            <form id="progressForm" aria-label="Log Progress">
+                <label for="date">Date:</label>
+                <input type="date" id="date" required>
+                <label for="completed">Completed:</label>
+                <select id="completed" required>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <button type="submit">Log</button>
+            </form>
+            <canvas id="progressChart" aria-label="Progress Chart"></canvas>
+            <ul id="progressList" aria-label="Progress History"></ul>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings">
+            <h2>Settings</h2>
+            <label for="duration">Exercise Duration (s):</label>
+            <input type="number" id="duration" min="30" max="300" value="300">
+            <label for="language">Language:</label>
+            <select id="language">
+                <option value="en">English</option>
+                <option value="es">Español</option>
+            </select>
+            <button id="saveSettings" aria-label="Save Settings">Save</button>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2023 PFE App for Men | <a href="#privacy">Privacy Policy</a> | Made with ♡</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
