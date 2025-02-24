@@ -25,42 +25,38 @@ const exercises = [
         duration: 60 // 1 minute
     }
 ];
-
-
 let currentExerciseIndex = 0;
 let timerInterval;
 let timeLeft = exercises[currentExerciseIndex].duration;
 
-const exerciseName = document.getElementById('exercise-name');
-const exerciseDescription = document.getElementById('exercise-description');
-const exerciseImage = document.getElementById('exercise-image');
-const exerciseTimer = document.getElementById('exercise-timer');
-const progressBar = document.getElementById('progress-bar');
+const exerciseNameElement = document.getElementById('exercise-name');
+const exerciseDescriptionElement = document.getElementById('exercise-description');
+const exerciseTimerElement = document.getElementById('exercise-timer');
+const progressBarElement = document.getElementById('progress-bar');
 
 document.getElementById('startButton').addEventListener('click', startTimer);
 document.getElementById('stopButton').addEventListener('click', stopTimer);
 document.getElementById('resetButton').addEventListener('click', resetTimer);
-document.getElementById('nextButton').addEventListener('click', nextExercise);
-document.getElementById('prevButton').addEventListener('click', prevExercise);
 
 function updateUI() {
     const exercise = exercises[currentExerciseIndex];
-    exerciseName.textContent = exercise.name;
-    exerciseDescription.textContent = exercise.description;
-    exerciseImage.src = exercise.image;
+    exerciseNameElement.textContent = exercise.name;
+    exerciseDescriptionElement.textContent = exercise.description;
     timeLeft = exercise.duration;
     updateTimerDisplay();
     updateProgressBar();
 }
 
 function updateTimerDisplay() {
-    exerciseTimer.textContent = `00:${timeLeft < 10 ? '0' : ''}${timeLeft}`;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    exerciseTimerElement.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 }
 
 function updateProgressBar() {
     const totalDuration = exercises[currentExerciseIndex].duration;
     const percentage = ((totalDuration - timeLeft) / totalDuration) * 100;
-    progressBar.style.width = `${percentage}%`;
+    progressBarElement.style.width = `${percentage}%`;
 }
 
 function startTimer() {
@@ -72,7 +68,14 @@ function startTimer() {
             updateProgressBar();
         } else {
             clearInterval(timerInterval);
-            nextExercise();
+            if (currentExerciseIndex < exercises.length - 1) {
+                currentExerciseIndex++;
+                updateUI();
+                startTimer();
+            } else {
+                // Routine complete
+                alert('Well done! You have completed the routine.');
+            }
         }
     }, 1000);
 }
@@ -83,24 +86,6 @@ function stopTimer() {
 
 function resetTimer() {
     clearInterval(timerInterval);
-    timeLeft = exercises[currentExerciseIndex].duration;
-    updateTimerDisplay();
-    updateProgressBar();
+    currentExerciseIndex = 0;
+    updateUI();
 }
-
-function nextExercise() {
-    if (currentExerciseIndex < exercises.length - 1) {
-        currentExerciseIndex++;
-        updateUI();
-    }
-}
-
-function prevExercise() {
-    if (currentExerciseIndex > 0) {
-        currentExerciseIndex--;
-        updateUI();
-    }
-}
-
-// Initialize UI
-updateUI();
