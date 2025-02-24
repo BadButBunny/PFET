@@ -16,6 +16,7 @@ body {
     width: 90%;
     max-width: 400px;
     text-align: center;
+    padding: 20px;
 }
 
 header {
@@ -28,15 +29,10 @@ main {
     padding: 20px;
 }
 
-.exercise img {
-    width: 100%;
-    max-width: 200px;
-    margin: 20px 0;
-}
-
 .timer-container {
     position: relative;
     width: 100%;
+    margin: 20px 0;
 }
 
 .progress-bar {
@@ -51,13 +47,13 @@ main {
     margin: 10px 0;
 }
 
-.navigation, .control-buttons {
+.control-buttons {
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
 }
 
-.nav-button, .control-button {
+.control-button {
     background-color: #4CAF50;
     border: none;
     color: white;
@@ -66,11 +62,6 @@ main {
     font-size: 1em;
     cursor: pointer;
     border-radius: 4px;
-    flex-grow: 1;
-    margin: 0 5px;
-}
-
-.nav-button:hover, .control-button:hover {
-    background-color: #45a049;
-}
+    flex-grow: 1
+::contentReference[oaicite:0]{index=0}
  
