@@ -1,23 +1,31 @@
 const exercises = [
     {
-        name: 'Quick Flick Kegels',
-        description: 'Rapidly contract and relax your pelvic floor muscles.',
-        image: 'quick-flick-kegels.png',
-        duration: 30
+        name: 'Diaphragmatic Breathing',
+        description: 'Promotes relaxation and prepares the pelvic floor muscles for exercise.',
+        duration: 60 // 1 minute
     },
     {
-        name: 'Long Hold Kegels',
-        description: 'Sustain a contraction for a few seconds to build endurance.',
-        image: 'long-hold-kegels.png',
-        duration: 30
+        name: 'Slow Kegel Contractions',
+        description: 'Strengthens the slow-twitch muscle fibers responsible for sustained support.',
+        duration: 60 // 1 minute
+    },
+    {
+        name: 'Quick Flick Kegels',
+        description: 'Enhances the fast-twitch muscle fibers for quick responses to sudden pressures.',
+        duration: 60 // 1 minute
     },
     {
         name: 'Bridge Pose',
-        description: 'Lift your hips to engage the pelvic floor and gluteal muscles.',
-        image: 'bridge-pose.png',
-        duration: 30
+        description: 'Engages the pelvic floor along with gluteal and core muscles.',
+        duration: 60 // 1 minute
+    },
+    {
+        name: 'Happy Baby Pose',
+        description: 'Promotes relaxation and lengthening of the pelvic floor muscles.',
+        duration: 60 // 1 minute
     }
 ];
+
 
 let currentExerciseIndex = 0;
 let timerInterval;
